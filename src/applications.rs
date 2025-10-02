@@ -1,6 +1,5 @@
 use crate::models::{ApplicationInfo, Condition, SqlQuery};
 use crate::parser::parse_compound_conditions;
-use crate::utils::evaluate_single_condition;
 use std::io::Cursor;
 use std::path::Path;
 
@@ -64,7 +63,6 @@ fn get_installed_applications_optimized(needs_size: bool) -> Result<Vec<Applicat
 #[cfg(target_os = "macos")]
 fn get_macos_applications(needs_size: bool) -> Result<Vec<ApplicationInfo>, String> {
     use std::fs;
-    use std::path::Path;
 
     let mut applications = Vec::new();
 
@@ -472,30 +470,6 @@ fn get_directory_size_fast(path: &Path) -> u64 {
     } else {
         0
     }
-}
-
-fn get_directory_size(path: &Path) -> u64 {
-    use std::fs;
-
-    let mut total_size = 0u64;
-
-    if let Ok(metadata) = fs::metadata(path) {
-        total_size += metadata.len();
-    }
-
-    if path.is_dir() {
-        if let Ok(entries) = fs::read_dir(path) {
-            for entry in entries.flatten() {
-                total_size += get_directory_size(&entry.path());
-            }
-        }
-    }
-
-    total_size
-}
-
-fn get_file_size(path: &Path) -> u64 {
-    std::fs::metadata(path).map(|m| m.len()).unwrap_or(0)
 }
 
 #[cfg(test)]

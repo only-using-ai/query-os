@@ -1,5 +1,5 @@
 use crate::applications::execute_application_query;
-use crate::models::{ApplicationInfo, Condition, FileInfo, ProcessInfo, QueryResult, QueryType, SqlQuery};
+use crate::models::{Condition, FileInfo, ProcessInfo, QueryResult, QueryType, SqlQuery};
 use crate::network::execute_network_query;
 use crate::parser::parse_compound_conditions;
 use crate::processes::execute_process_query;

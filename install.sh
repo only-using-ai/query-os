@@ -65,9 +65,9 @@ if [ -n "$Q_BINARY_PATH" ]; then
 
     echo ""
     echo "Usage examples:"
-    echo "  q \"SELECT * FROM .\""
-    echo "  q \"SELECT * FROM ps LIMIT 5\""
-    echo "  q \"SELECT name, type FROM /tmp WHERE type = 'file'\""
+    echo "  q --query \"SELECT * FROM .\""
+    echo "  q --query \"SELECT * FROM ps LIMIT 5\""
+    echo "  q --query \"SELECT name, type FROM /tmp WHERE type = 'file'\""
     echo ""
     print_success "Installation complete! 🎉"
 else
