@@ -1,0 +1,3 @@
+[submodule "core-prompts"]
+	path = core-prompts
+	url = git@github.com:only-using-ai/core-prompts.git

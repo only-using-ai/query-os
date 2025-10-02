@@ -1,3 +1,9 @@
+The Only Using AI team is completely committed to not writing a single line of code by hand. We are to experiment to see how far we can go ONLY using AI. Usage (if using Cursor):
+
+```bash
+@product-development-team.md Implement the following feature <define the feature>
+```
+
 # Q - Filesystem & Process SQL Query Tool
 
 A command-line application written in Rust that allows you to query both filesystem contents and system processes using SQL-like syntax.
@@ -20,7 +26,7 @@ A command-line application written in Rust that allows you to query both filesys
 ## Usage
 
 ```bash
-cargo run -- "SELECT * FROM /path/to/directory"
+cargo run -- --query "SELECT * FROM /path/to/directory"
 ```
 
 The tool displays query execution time in green text at the bottom of the results.
@@ -54,91 +60,91 @@ SELECT [fields|*] FROM path [WHERE condition] [ORDER BY field] [LIMIT number]
 #### Filesystem Queries
 ```bash
 # List all files and directories in current directory
-q "SELECT * FROM ."
+q --query "SELECT * FROM ."
 
 # Show only files in /tmp
-q "SELECT name, type, size FROM /tmp WHERE type = 'file'"
+q --query "SELECT name, type, size FROM /tmp WHERE type = 'file'"
 
 # Find large files (>1MB) and sort by size
-q "SELECT name, size FROM /home/user/Documents WHERE size > '1 MB' ORDER BY size"
+q --query "SELECT name, size FROM /home/user/Documents WHERE size > '1 MB' ORDER BY size"
 
 # List directories only, limit to 10 results
-q "SELECT name FROM /var WHERE type = 'directory' LIMIT 10"
+q --query "SELECT name FROM /var WHERE type = 'directory' LIMIT 10"
 
 # Find Rust source files
-q "SELECT name FROM . WHERE name LIKE '%.rs'"
+q --query "SELECT name FROM . WHERE name LIKE '%.rs'"
 
 # Find files in the src directory
-q "SELECT name, path FROM . WHERE path LIKE 'src/%'"
+q --query "SELECT name, path FROM . WHERE path LIKE 'src/%'"
 
 # Find Rust files but exclude those in target directory
-q "SELECT name, path FROM . WHERE name LIKE '%.rs' AND path NOT LIKE '%target/%'"
+q --query "SELECT name, path FROM . WHERE name LIKE '%.rs' AND path NOT LIKE '%target/%'"
 
 # Find files modified recently, sorted by date
-q "SELECT name, modified_date FROM . ORDER BY modified_date DESC LIMIT 5"
+q --query "SELECT name, modified_date FROM . ORDER BY modified_date DESC LIMIT 5"
 
 # Find all Rust source files
-q "SELECT name, extension FROM . WHERE extension = 'rs'"
+q --query "SELECT name, extension FROM . WHERE extension = 'rs'"
 
 # Group files by extension and sort by extension
-q "SELECT name, extension FROM . ORDER BY extension"
+q --query "SELECT name, extension FROM . ORDER BY extension"
 
 # Find files with specific extensions using LIKE
-q "SELECT name, extension FROM . WHERE extension LIKE 'j%'"
+q --query "SELECT name, extension FROM . WHERE extension LIKE 'j%'"
 
 # Find files without extensions
-q "SELECT name FROM . WHERE extension = 'NULL'"
+q --query "SELECT name FROM . WHERE extension = 'NULL'"
 
 # Find files larger than the average file size
-q "SELECT name, size FROM . WHERE size > (SELECT AVG(size) FROM . WHERE type = 'file')"
+q --query "SELECT name, size FROM . WHERE size > (SELECT AVG(size) FROM . WHERE type = 'file')"
 
 # Find files that exist in both directories using EXISTS
-q "SELECT name FROM /dir1 WHERE EXISTS (SELECT 1 FROM /dir2 WHERE name = (SELECT name FROM /dir1))"
+q --query "SELECT name FROM /dir1 WHERE EXISTS (SELECT 1 FROM /dir2 WHERE name = (SELECT name FROM /dir1))"
 ```
 
 #### Process Queries
 ```bash
 # List all processes
-q "SELECT * FROM ps"
+q --query "SELECT * FROM ps"
 
 # Show running processes only
-q "SELECT pid, name, status FROM ps WHERE status = 'running' LIMIT 10"
+q --query "SELECT pid, name, status FROM ps WHERE status = 'running' LIMIT 10"
 
 # Find processes by name pattern
-q "SELECT pid, name, cpu_usage FROM ps WHERE name LIKE '%chrome%'"
+q --query "SELECT pid, name, cpu_usage FROM ps WHERE name LIKE '%chrome%'"
 
 # Find high CPU usage processes
-q "SELECT pid, name, cpu_usage FROM ps WHERE cpu_usage > '1.0' ORDER BY cpu_usage DESC"
+q --query "SELECT pid, name, cpu_usage FROM ps WHERE cpu_usage > '1.0' ORDER BY cpu_usage DESC"
 
 # Find memory-intensive processes
-q "SELECT pid, name, memory_usage FROM ps WHERE memory_usage > '100 MB' ORDER BY memory_usage DESC"
+q --query "SELECT pid, name, memory_usage FROM ps WHERE memory_usage > '100 MB' ORDER BY memory_usage DESC"
 
 # Find processes using more memory than the average
-q "SELECT pid, name, memory_usage FROM ps WHERE memory_usage > (SELECT AVG(memory_usage) FROM ps)"
+q --query "SELECT pid, name, memory_usage FROM ps WHERE memory_usage > (SELECT AVG(memory_usage) FROM ps)"
 
 # Show process count by status
-q "SELECT status, COUNT(*) as count FROM ps GROUP BY status"
+q --query "SELECT status, COUNT(*) as count FROM ps GROUP BY status"
 ```
 
 #### Application Queries
 ```bash
 # List all installed applications
-q "SELECT * FROM applications"
+q --query "SELECT * FROM applications"
 
 # Find applications by name
-q "SELECT name, version FROM applications WHERE name LIKE '%Chrome%'"
+q --query "SELECT name, version FROM applications WHERE name LIKE '%Chrome%'"
 
 # Find developer tools
-q "SELECT name, category FROM applications WHERE category LIKE '%developer%'"
+q --query "SELECT name, category FROM applications WHERE category LIKE '%developer%'"
 
 # Find applications by category
-q "SELECT name FROM applications WHERE category = 'public.app-category.productivity' LIMIT 10"
+q --query "SELECT name FROM applications WHERE category = 'public.app-category.productivity' LIMIT 10"
 
 # Find applications with version information
-q "SELECT name, version FROM applications WHERE version IS NOT NULL ORDER BY version DESC"
+q --query "SELECT name, version FROM applications WHERE version IS NOT NULL ORDER BY version DESC"
 
 # Get application sizes (note: sizes are approximate for performance)
-q "SELECT name, size FROM applications WHERE size > '100 MB' ORDER BY size DESC"
+q --query "SELECT name, size FROM applications WHERE size > '100 MB' ORDER BY size DESC"
 ```
 
 ### WHERE Conditions
