@@ -1,0 +1,53 @@
+# Rust build artifacts
+target/
+debug/
+release/
+
+# Cargo lock file (optional - remove if you want to commit it)
+Cargo.lock
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Log files
+*.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Temporary files
+*.tmp
+*.temp
+
+# Backup files
+*.bak
+*.backup
+
+# Debug files
+*.pdb
+*.exe
+*.dll
+
+# Documentation build artifacts
+book/
+
+# Benchmarking
+.criterion/
+
+# Clippy
+clippy.toml

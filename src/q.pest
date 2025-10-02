@@ -1,0 +1,70 @@
+WHITESPACE = _{ " " | "\t" | "\n" | "\r" }
+
+// Keywords (case sensitive - input is preprocessed to uppercase)
+SELECT = _{ "SELECT" }
+FROM = _{ "FROM" }
+WHERE = _{ "WHERE" }
+DELETE = _{ "DELETE" }
+ORDER = _{ "ORDER" }
+BY = _{ "BY" }
+LIMIT = _{ "LIMIT" }
+AND = _{ "AND" }
+AS = _{ "AS" }
+LIKE = _{ "LIKE" }
+NOT = _{ "NOT" }
+EXISTS = _{ "EXISTS" }
+IN = _{ "IN" }
+DISTINCT = _{ "DISTINCT" }
+IS = _{ "IS" }
+ASC = _{ "ASC" }
+DESC = _{ "DESC" }
+
+// Operators
+EQUALS = { "=" }
+NOT_EQUALS = { "!=" | "<>" }
+GREATER = { ">" }
+GREATER_EQUALS = { ">=" }
+LESS = { "<" }
+LESS_EQUALS = { "<=" }
+
+// Literals
+string = @{ "\"" ~ (!("\"") ~ ANY)* ~ "\"" | "'" ~ (!("'") ~ ANY)* ~ "'" }
+identifier = @{ ASCII_ALPHANUMERIC+ | "." | "#" | "::" | "-" | "_" | "*" }
+path_identifier = @{ (!("\"" | "'" | " " | "\t" | "\n" | "\r") ~ ANY)+ }
+number = @{ ASCII_DIGIT+ }
+NULL = { "NULL" }
+
+// Main query types
+query = { select_query | delete_query }
+
+// SELECT query: SELECT [DISTINCT] fields FROM path [WHERE condition] [ORDER BY field [ASC|DESC]] [LIMIT number]
+select_query = { SELECT ~ (DISTINCT)? ~ fields ~ FROM ~ path ~ (WHERE ~ condition)? ~ (ORDER ~ BY ~ order_by_clause)? ~ (LIMIT ~ number)? }
+
+// DELETE query: DELETE FROM path [WHERE condition]
+delete_query = { DELETE ~ FROM ~ path ~ (WHERE ~ condition)? }
+
+// Fields can be * or comma-separated field list
+fields = { "*" | field_list }
+field_list = { field ~ (WHITESPACE* ~ "," ~ WHITESPACE* ~ field)* }
+field = { identifier ~ (WHITESPACE+ ~ AS ~ WHITESPACE+ ~ identifier)? }
+
+// Path can be quoted string or unquoted path
+path = { string | path_identifier }
+
+// Conditions support comparison operators, LIKE, and NULL checks
+condition = { comparison | like_condition | not_like_condition | null_condition | not_null_condition | is_null_condition | is_not_null_condition | simple_null_condition | simple_not_null_condition }
+comparison = { identifier ~ (EQUALS | NOT_EQUALS | GREATER | GREATER_EQUALS | LESS | LESS_EQUALS) ~ value }
+like_condition = { identifier ~ LIKE ~ value }
+not_like_condition = { identifier ~ NOT ~ LIKE ~ value }
+null_condition = { identifier ~ IS ~ NULL }
+not_null_condition = { identifier ~ IS ~ NOT ~ NULL }
+is_null_condition = { identifier ~ IS ~ NULL }
+is_not_null_condition = { identifier ~ IS ~ NOT ~ NULL }
+simple_null_condition = { identifier ~ NULL }
+simple_not_null_condition = { identifier ~ NOT ~ NULL }
+
+// Values can be strings, numbers, identifiers, or NULL
+value = { string | number | identifier | NULL }
+
+// ORDER BY clause: identifier [ASC|DESC]
+order_by_clause = { identifier ~ (ASC | DESC)? }
